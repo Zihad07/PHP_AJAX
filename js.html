@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Ajax</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        header {
+            padding: 30px;
+            background: #dddd;
+            text-align: center;
+        }
+    </style>
+  </head>
+  <body>
+
+    <div class="container-fluid">
+        <header>
+            <h1>Ajax Learning</h1>
+        </header>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 p-4">
+                <div id="ajax" class="pb-4"></div>
+                <div>
+                    <button class="btn btn-sm btn-primary" onclick="init()" >Click Me</button>
+                </div>
+            </div>
+        </div>
+    </div>
+      
+    <!-- Optional JavaScript -->
+    <script src="jquery.js"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+
+    <script>
+    //    function init(){
+    //         var xhttp = new XMLHttpRequest();
+    //         xhttp.onreadystatechange = function() {
+    //         if (this.readyState == 4 && this.status == 200) {
+    //             document.getElementById('ajax').innerHTML = xhttp.responseText;
+    //         }
+    //         };
+    //         xhttp.open("GET", "js.php", true);
+    //         xhttp.send();
+
+    //    }
+
+       function init(){
+           var theObject = new XMLHttpRequest();
+
+           theObject.open("GET","js.php",true);
+
+           theObject.onreadystatechange = function(){
+               if(this.readyState == 4 &&  this.status == 200){
+                   document.getElementById("ajax").innerHTML= theObject.responseText;
+               }
+           }
+
+           theObject.send();
+       }
+    </script>
+
+
+  </body>
+</html>
