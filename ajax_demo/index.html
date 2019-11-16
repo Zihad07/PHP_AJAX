@@ -1,57 +1,149 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <title>php Ajax</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  </head>
-  <body>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        .br-0 {
+            border-radius: 0 !important;
+        }
+    </style>
+</head>
+
+<body>
 
 
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2 text-center">
+            <div class="col-md-8 col-md-offset-2">
                 <h2 class="">Search DataBase</h2>
                 <input type="text" name="search" id="search" class="form-control" placeholder="Seearch Our inventory">
                 <br>
-                <h2 class="bg-success p-2" id="result"></h2>
+                <h2 class="bg-success" id="result"></h2>
+
 
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <form method="POST" action="add_cars.php" id="add-car-form">
+
+                    <div class="input-group">
+                        <input type="text" name="car_name" id="car_name" class="form-control">
+                        <input type="submit" value="add car" class="input-group-btn btn btn-primary br-0">
+                    </div>
+
+                </form>
+
+                
+                <div id="car-result"></div>
+                
+            </div>
+
+            <div class="col-md-6">
+                <table class="table">
+                    <thead>
+                        <th>Id</th>
+                        <th>Name</th>
+                    </thead>
+
+                    <tbody id="show-cars">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-      
+
     <!-- Optional JavaScript -->
     <script src="../jquery.js"></script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
 
     <script>
-        $(document).ready(function(){
-            
-            $("input#search").keyup(function(){
+        $(document).ready(function () {
+
+                // every 1 second it will pull data from Databse
+                // and show table in UI
+                setInterval(function(){
+                    displayData();
+                },1000);
+               // Disply data from Database
+
+              function displayData(){
+                $.ajax({
+                    url: 'display_cars.php',
+                    type: 'POST',
+                    success: function(show_cars){
+                        if(!show_cars.error){
+                            // console.table(show_cars);
+                              $("#show-cars").html(show_cars);
+                        }
+                    }
+                })
+              }
+
+              
+
+            $("input#search").keyup(function () {
                 var search = $(this).val();
                 // console.log(search);
                 $.ajax({
                     url: 'search.php',
-                    data: {search:search},
-                    type:'POST',
-                    success: function(data){
-                        if(!data.error){
+                    data: {
+                        search: search
+                    },
+                    type: 'POST',
+                    success: function (data) {
+                        if (!data.error) {
                             $('#result').html(data);
                         }
-                        
+
                     }
                 })
             })
             // ajax
             // $.ajax()
+
+            // another way post 
+            // Below code add data in database
+
+
+            $("#add-car-form").submit(function(e){
+                e.preventDefault();
+                var postData = $(this).serialize();
+                var url = $(this).attr("action");
+
+                // console.log(postData)
+                // console.log(url);
+
+                $.post(url,postData,function(data){
+                    $("#car-result").html(data);
+                    $("input#car_name").val("");
+                })
+
+                // calling displaydata functin show the data base table
+                displayData()
+
+             
+            })
         })
     </script>
-  </body>
+</body>
+
 </html>

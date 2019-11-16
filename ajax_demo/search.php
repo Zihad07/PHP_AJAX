@@ -1,8 +1,9 @@
 <?php 
-
+require "db.php";
+require "function.php";
 // db connection
 
-    $connection = mysqli_connect("localhost","root","","ajax");
+    
 
     // if($connection){
     //     echo "Connected";
@@ -18,13 +19,19 @@
         $query = "SELECT * FROM cars WHERE car LIKE '{$search}%' ";
         $search_query = mysqli_query($connection,$query);
 
-        if(!$search_query){
-            die("Query Filed ".mysqli_error($connection));
-        }
+       
+        while ($row = mysqli_fetch_assoc($search_query)) {
+            $brand = $row['car'];
+            ?>
+            <ul class="list-unstyled">
+                <?php 
+                    echo "<li>{$brand}</li>";
+                ?>
+            </ul>
+    
+        <?php } 
+    }?>
+    
 
-        echo "ok";
-    }
 
 
-
-?>
