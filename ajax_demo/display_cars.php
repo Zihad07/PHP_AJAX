@@ -12,7 +12,7 @@
     while ($row = mysqli_fetch_assoc($query_car_info)) {
         echo "<tr>";
         echo "<td>{$row['id']}</td>";
-        echo "<td>{$row['car']}</td>";
+        echo "<td><a data-rel='{$row['id']}' class='title-link' href='javascript:void(0)'>{$row['car']}</a></td>";
         echo "</tr>";
     }
 
@@ -20,3 +20,18 @@
 
 
 ?>
+
+<script>
+     $(".title-link").on("click", function () {
+        //  alert("working :) ");
+        $("#action-container").show();
+        var id = $(this).data('rel')
+
+        $.post("process.php",{id:id},function(data){
+            $("#action-container").html(data);
+        })
+
+
+     });
+
+</script>

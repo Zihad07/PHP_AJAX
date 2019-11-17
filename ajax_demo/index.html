@@ -34,6 +34,7 @@
         </div>
 
         <div class="row">
+            <!-- Search html content -->
             <div class="col-md-6">
                 <form method="POST" action="add_cars.php" id="add-car-form">
 
@@ -49,6 +50,11 @@
                 
             </div>
 
+           
+        </div>
+
+        <div class="row">
+            <!-- Display Table content -->
             <div class="col-md-6">
                 <table class="table">
                     <thead>
@@ -60,6 +66,11 @@
 
                     </tbody>
                 </table>
+            </div>
+
+            <div class="col-md-6">
+                <p id="feedback" class="bg-success"></p>
+                <div id="action-container"></div>
             </div>
         </div>
     </div>
@@ -77,7 +88,7 @@
 
     <script>
         $(document).ready(function () {
-
+               
                 // every 1 second it will pull data from Databse
                 // and show table in UI
                 setInterval(function(){
